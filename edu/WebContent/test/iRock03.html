@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="EUC-KR">
+	<title>iRock - The Virtual Pet Rock</title>
+	
+	<script type="text/javascript">
+		function touchRock() {
+			var userName = prompt("이름을 입력하세요.");
+			
+			if(userName){
+				alert("안영하세요. "+userName+" 님.");
+				document.getElementById("rockImg").src="rock_happy.png"
+			}
+		}
+	</script>
+	
+</head>
+
+<body onload="alert('안녕하세요. ^^');">
+
+	<div style="margin-top: 100px; text-align: center;">
+		<img id="rockImg" alt="iRock" src="rock.png" style="cursor: pointer"  onclick="touchRock();">
+	</div>
+
+</body>
+
+</html>

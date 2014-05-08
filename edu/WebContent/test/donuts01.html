@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="EUC-KR">
+	<title>도너츠 예약판매</title>
+	
+	<link rel="stylesheet" type="text/css" href="donuts.css" />
+	
+	<script type="text/javascript">
+		function updateOrder() {
+			//const TAXRATE = 0.1;       	//IE 미지원
+			//const DONUTPRICE = 50;	//IE 미지원
+			var TAXRATE=0.1;
+			var DONUTPRICE=50;
+			
+			//==> documnet 객체의 id로 value 접근
+			var numCakeDonuts = document.getElementById("cakedonuts").value;
+			//==> documnet 객체에서 form 객체, element 객체, value 접근
+			var numGrazedDonuts = document.orderform.glazeddonuts.value;
+			
+			var subTotal = (numCakeDonuts + numGrazedDonuts) * DONUTPRICE;
+			var tax = subTotal * TAXRATE;
+			var total = subTotal + tax;
+			
+			//==> documnet 객체의 id로 value 접근
+			document.getElementById("subtotal").value = subTotal + " 원";
+			//==> documnet 객체에서 form 객체, element 객체, value 접근
+			//==> 소수점 2자리 표시
+			document.orderform.tax.value = tax+" 원";
+			//==> documnet 객체에서 forms array 객체, elements array 객체, value 접근
+			document.forms[0].elements[6].value = total + " 원";
+		}
+		
+		function placeOrder(form){
+			form.submit();
+		}
+	</script>
+</head>
+
+<body>
+
+<div id="frame">
+      <div class="heading">도너츠 예약판매</div>
+      <div class="subheading">모든 상품은 500원</div>
+      
+      <div id="left">
+        <img src="donuttime.png" alt="Just-In-Time Donuts" />
+      </div>
+      
+      <form name="orderform" action="orderDonuts.jsp" method="POST">
+        <div class="field">
+          주문자: <input type="text" id="name" name="name" value="" />
+        </div>
+        
+        <div class="field">
+        # 도너츠 : <input type="text" id="cakedonuts" name="cakedonuts" value=""	onchange="updateOrder();" />
+        </div>
+        
+        <div class="field">
+        # 그레이즈드 도넛 : <input type="text" id="glazeddonuts" name="glazeddonuts" value="" onchange="updateOrder();" />
+        </div>
+        
+        <div class="field">
+        주문 후 가져갈 시간(분) : <input type="text" id="pickupminutes" name="pickupminutes" value="" />
+        </div>
+        
+        <div class="field">
+        주문가격 : <input type="text" id="subtotal" name="subtotal" value="" readonly="readonly" />
+        </div>
+        
+        <div class="field">
+        세금 : <input type="text" id="tax" name="tax" value="" readonly="readonly" />
+        </div>
+        
+        <div class="field">
+        결제금액 : <input type="text" id="total" name="total" value="" readonly="readonly" />
+        </div>
+        
+        <div class="field">
+        	<input type="button" value="Place Order" onclick="placeOrder(this.form);" />
+        </div>
+      </form>
+      
+    </div>
+</body>
+</html>

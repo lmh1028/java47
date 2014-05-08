@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="EUC-KR">
+	<title>도너츠 예약판매</title>
+	
+	<link rel="stylesheet" type="text/css" href="donuts.css" />
+	
+	<script type="text/javascript">
+		function updateOrder() {
+
+			var TAXRATE=0.1;
+			var DONUTPRICE=50;
+			
+			//==> 입력값을  parsing하는 parseDounts()사용
+			var numCakeDonuts = parseDonuts(document.getElementById("cakedonuts").value);
+			var numGrazedDonuts = parseDonuts(document.orderform.glazeddonuts.value);
+			
+			// 빌트인함수 isNaN()을 이용 숫자인지 유효성 check
+			if(isNaN(numCakeDonuts)){
+				numCakeDonuts = 0;
+			}
+			if(isNaN(numGrazedDonuts)){
+				numGrazedDonuts = 0;
+			}
+			
+			var subTotal = (numCakeDonuts + numGrazedDonuts) * DONUTPRICE;
+			var tax = subTotal * TAXRATE;
+			var total = subTotal + tax;
+			
+			//==> documnet 객체의 id로 value 접근
+			document.getElementById("subtotal").value = subTotal + " 원";
+			document.orderform.tax.value = tax.toFixed(2)+" 원";
+			document.forms[0].elements[6].value = total + " 원";
+		}
+		
+		//==> 이름입력 유무 유효성 check
+		function placeOrder(form){
+			if( document.getElementById("name").value == ""){
+				alert("주문자 이름은 반드시 입력하셔야 합니다.....")	
+			}else if( document.getElementById("pickupminutes").value == "" 
+					      || isNaN( document.getElementById("pickupminutes").value )){
+				alert("주문후 가져사실 시간  반드시 숫자로 입력하셔야 합니다.....")	
+			}else{
+				form.submit();
+			}
+		}
+		
+		//==> 10 입력시 => 10 return
+		//==> 10 dozen 입력시 10*12 return
+		function parseDonuts(dountString) {
+			// 빌트인 함수 paseInt()는 10 abc 가 입력되면 문자무시 10 return 함
+			numDonuts = parseInt(dountString);
+			// indexOf()  이용 문자열 Check
+			if(dountString.indexOf("dozen") != -1){
+				numDonuts *= 12;
+			}
+			return numDonuts;
+		}
+	</script>
+</head>
+
+<body>
+
+<div id="frame">
+      <div class="heading">도너츠 예약판매</div>
+      <div class="subheading">모든 상품은 500원</div>
+      
+      <div id="left">
+        <img src="donuttime.png" alt="Just-In-Time Donuts" />
+      </div>
+      
+      <form name="orderform" action="orderDonuts.jsp" method="POST">
+        <div class="field">
+          주문자: <input type="text" id="name" name="name" value="" />
+        </div>
+        
+        <div class="field">
+        # 도너츠 : <input type="text" id="cakedonuts" name="cakedonuts" value=""	onchange="updateOrder();" />
+        </div>
+        
+        <div class="field">
+        # 그레이즈드 도넛 : <input type="text" id="glazeddonuts" name="glazeddonuts" value="" onchange="updateOrder();" />
+        </div>
+        
+        <div class="field">
+        주문 후 가져갈 시간(분) : <input type="text" id="pickupminutes" name="pickupminutes" value="" />
+        </div>
+        
+        <div class="field">
+        주문가격 : <input type="text" id="subtotal" name="subtotal" value="" readonly="readonly" />
+        </div>
+        
+        <div class="field">
+        세금 : <input type="text" id="tax" name="tax" value="" readonly="readonly" />
+        </div>
+        
+        <div class="field">
+        결제금액 : <input type="text" id="total" name="total" value="" readonly="readonly" />
+        </div>
+        
+        <div class="field">
+        	<input type="button" value="Place Order" onclick="placeOrder(this.form);" />
+        </div>
+      </form>
+      
+    </div>
+</body>
+</html>
